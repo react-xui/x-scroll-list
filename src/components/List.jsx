@@ -82,12 +82,14 @@ export default class List extends Component {
     //判断长度
     let container = this.containerRef;
     let list = this.listRef;
-    let wc = container.offsetWidth;
-    let wl = list.scrollWidth;
-    // console.log(container,list);
-    // console.log(wc,wl)
-    if(wl>wc){
-      this.setState({showPager:true})
+    if(container&&list){
+      let wc = container.offsetWidth;
+      let wl = list.scrollWidth;
+      // console.log(container,list);
+      // console.log(wc,wl)
+      if(wl>wc){
+        this.setState({showPager:true})
+      }
     }
   }
   scroll(forward){

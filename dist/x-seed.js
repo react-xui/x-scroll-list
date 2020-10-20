@@ -228,12 +228,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	      //判断长度
 	      var container = this.containerRef;
 	      var list = this.listRef;
-	      var wc = container.offsetWidth;
-	      var wl = list.scrollWidth;
-	      // console.log(container,list);
-	      // console.log(wc,wl)
-	      if (wl > wc) {
-	        this.setState({ showPager: true });
+	      if (container && list) {
+	        var wc = container.offsetWidth;
+	        var wl = list.scrollWidth;
+	        // console.log(container,list);
+	        // console.log(wc,wl)
+	        if (wl > wc) {
+	          this.setState({ showPager: true });
+	        }
 	      }
 	    }
 	  }, {
