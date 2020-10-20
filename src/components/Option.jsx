@@ -8,15 +8,17 @@ const getCss=(obj)=>{
     }
     return arr.join(' ');
 }
-export default (props) => {
+function Option(props) {
     const { selected, disabled, className, children ,onSelect} = props;
     let cls = getCss({
-        [selected]:'x-list-option-selected',
-        [disabled]:'x-list-option-disabled'
+        [selected]:'x-scroll-list-option-selected',
+        [disabled]:'x-scroll-list-option-disabled'
     })
     return (
-        <div className={'x-list-option ' + cls} onClick={onSelect}>
+        <div className={'x-scroll-list-option ' + cls} onClick={onSelect}>
             {children}
         </div>
     )
 }
+Option.displayName="ScrollOption"
+export default Option
