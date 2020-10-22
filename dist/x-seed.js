@@ -184,12 +184,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var _this2 = this;
 
 	      var _props = this.props,
-	          data = _props.data,
+	          dataSource = _props.dataSource,
 	          children = _props.children,
 	          field = _props.field;
 
-	      if (data && data.length > 0) {
-	        return data.map(function (item, index) {
+	      if (dataSource && dataSource.length > 0) {
+	        return dataSource.map(function (item, index) {
 	          var value = item[field.value];
 	          var selected = false;
 	          if (_this2.state.value == value) {
@@ -208,6 +208,25 @@ return /******/ (function(modules) { // webpackBootstrap
 	            props.selected = true;
 	          }
 	          return _react2.default.cloneElement(item, props);
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(newProps) {
+	      var _this3 = this;
+
+	      if (newProps.value !== this.props.value) {
+	        this.setState({ value: newProps.value }, function () {
+	          var obj = {},
+	              index = -1;
+	          _this3.props.dataSource.forEach(function (item, i) {
+	            if (item.value === newProps.value) {
+	              obj = item;
+	              index = i;
+	            }
+	          });
+	          _this3.props.onChange.call(_this3, newProps.value, obj, index);
 	        });
 	      }
 	    }
@@ -254,23 +273,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      // console.log(123)
-	      var _props2 = this.props,
-	          children = _props2.children,
-	          onSelect = _props2.onSelect,
-	          showSearch = _props2.showSearch,
-	          className = _props2.className;
+	      var className = this.props.className;
 	      var showPager = this.state.showPager;
 
 	      var cls = (className || "") + ' x-scroll-list';
-	      var data = this.state.data;
-
 	      return _react2.default.createElement('div', { className: cls }, showPager && _react2.default.createElement('i', { className: 'xui icon-last x-scroll-list-page', onClick: this.scroll.bind(this, -1) }), _react2.default.createElement('div', { className: 'x-scroll-list-container', ref: function ref(_ref2) {
-	          return _this3.containerRef = _ref2;
+	          return _this4.containerRef = _ref2;
 	        } }, _react2.default.createElement('div', { className: 'x-scroll-list-options', ref: function ref(_ref) {
-	          return _this3.listRef = _ref;
+	          return _this4.listRef = _ref;
 	        } }, this.renderChildren())), showPager && _react2.default.createElement('i', { className: 'xui icon-next1 x-scroll-list-page', onClick: this.scroll.bind(this, 1) }));
 	    }
 	  }]);
@@ -280,7 +293,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	List.displayName = "ScrollList";
 	List.propTypes = {
-	  data: _propTypes2.default.array,
+	  dataSource: _propTypes2.default.array,
 	  children: _propTypes2.default.node,
 	  onSelect: _propTypes2.default.func
 	};
@@ -295,21 +308,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	List.Option = _Option2.default;
 
 	var _initialiseProps = function _initialiseProps() {
-	  var _this4 = this;
+	  var _this5 = this;
 
 	  this.onSelect = function (value, item, index, e) {
 	    var target = e.currentTarget;
 	    var x = target.offsetLeft;
-	    var container = _this4.containerRef;
+	    var container = _this5.containerRef;
 	    var wc = container.offsetWidth;
 	    // let sl = this.containerRef.scrollLeft;
 	    var sc = x - wc / 2 + target.offsetWidth / 2;
 	    container.scroll(sc, 0);
 	    // console.log(this.containerRef.scrollLeft,x)
-	    var onChange = _this4.props.onChange;
+	    var onChange = _this5.props.onChange;
 
-	    _this4.setState({ value: value }, function () {
-	      onChange.call(_this4, value, item, index);
+	    _this5.setState({ value: value }, function () {
+	      onChange.call(_this5, value, item, index);
 	    });
 	  };
 	};

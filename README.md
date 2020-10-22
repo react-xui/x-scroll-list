@@ -17,15 +17,15 @@ react list列表横向滚动
             <Option value="BBBB">bbb</Option>
             <Option>ccc</Option>
           </List>
-          //传入data
-          <List  onChange={this.onSelectHandle.bind(this)} data={[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb' }, { text: 'demo4' }, { text: 'demo5' }, { text: 'demo6' }]}></List>
+          //传入dataSource
+          <List  onChange={this.onSelectHandle.bind(this)} dataSource={[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb' }, { text: 'demo4' }, { text: 'demo5' }, { text: 'demo6' }]}></List>
 ```
 # API
 ## List
 ### onChange
 onChange返回选中操作时的回调,参数`value,item,index,e`
-### data
-直接传数组来渲染,如果不指定data，以children的Option来渲染
+### dataSource
+直接传数组来渲染,如果不指定`dataSource`，以`children`的`Option`来渲染
 ### field
 当传入data时，指定的text和value属性名,默认值如下：
 ```

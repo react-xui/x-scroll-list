@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 export default class List extends React.PureComponent {
   static displayName = "ScrollList";
   static propTypes = {
-    data: PropTypes.array,
+    dataSource: PropTypes.array,
     children: PropTypes.node,
     onSelect: PropTypes.func
   };
@@ -23,99 +23,112 @@ export default class List extends React.PureComponent {
       value: 'value'
     },
     onChange: () => { },
-    step:40,
+    step: 40,
   }
   static Option = Option;
   constructor(props) {
     super(props);
-    let value = typeof props.value==='undefined'?props.defaultValue:props.value;
-    this.state = { showPager:false ,value: value};
-    this.containerRef  = React.createRef();
-    this.listRef  = React.createRef();
+    let value = typeof props.value === 'undefined' ? props.defaultValue : props.value;
+    this.state = { showPager: false, value: value };
+    this.containerRef = React.createRef();
+    this.listRef = React.createRef();
   }
-  onSelect = (value, item, index,e) => {
+  onSelect = (value, item, index, e) => {
     let target = e.currentTarget;
     let x = target.offsetLeft;
     let container = this.containerRef;
     let wc = container.offsetWidth;
     // let sl = this.containerRef.scrollLeft;
-    let sc = x - wc/2 + target.offsetWidth/2 ;
-    container.scroll(sc,0)
+    let sc = x - wc / 2 + target.offsetWidth / 2;
+    container.scroll(sc, 0)
     // console.log(this.containerRef.scrollLeft,x)
     let { onChange } = this.props;
-    this.setState({value},()=>{
+    this.setState({ value }, () => {
       onChange.call(this, value, item, index);
     })
   }
   //渲染options，判断是data还是直接children
   renderChildren() {
-    let { data, children, field } = this.props;
-    if (data && data.length > 0) {
-      return data.map((item, index) => {
+    let { dataSource, children, field } = this.props;
+    if (dataSource && dataSource.length > 0) {
+      return dataSource.map((item, index) => {
         let value = item[field.value];
         let selected = false;
-        if(this.state.value ==value){
+        if (this.state.value == value) {
           selected = true;
         }
-        return <Option selected={selected} key={index} value={value} onSelect={this.onSelect.bind(this,value , item, index)}>{item[field.text]}</Option>
+        return <Option selected={selected} key={index} value={value} onSelect={this.onSelect.bind(this, value, item, index)}>{item[field.text]}</Option>
       })
     } else {
       return React.Children.map(children, (item, index) => {
         let props = { ...item.props }
         let data = { [field.value]: props.value, [field.text]: props.children };
         props.onSelect = this.onSelect.bind(this, props.value, data, index);
-        if(this.state.value == props.value){
+        if (this.state.value == props.value) {
           props.selected = true;
         }
         return React.cloneElement(item, props);
       })
     }
   }
+  componentWillReceiveProps(newProps) {
+    if (newProps.value !== this.props.value) {
+      this.setState({ value: newProps.value }, () => {
+        let obj = {}, index = -1;
+        this.props.dataSource.forEach((item, i) => {
+          if (item.value === newProps.value) {
+            obj = item;
+            index = i;
+          }
+        });
+        this.props.onChange.call(this, newProps.value, obj, index);
+      });
+    }
+  }
   componentDidMount() {
     this.checkWidth();
     window.addEventListener('resize', this.checkWidth.bind(this), false);
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.removeEventListener('resize', this.checkWidth.bind(this), false);
   }
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.checkWidth();
   }
-  checkWidth(){
+  checkWidth() {
     //判断长度
     let container = this.containerRef;
     let list = this.listRef;
-    if(container&&list){
+    if (container && list) {
       let wc = container.offsetWidth;
       let wl = list.scrollWidth;
       // console.log(container,list);
       // console.log(wc,wl)
-      if(wl>wc){
-        this.setState({showPager:true})
+      if (wl > wc) {
+        this.setState({ showPager: true })
       }
     }
   }
-  scroll(forward){
+  scroll(forward) {
     let step = this.props.step * forward;
     let container = this.containerRef;
     window.container = container
-    container.scroll(container.scrollLeft + step,0)
+    container.scroll(container.scrollLeft + step, 0)
   }
   render() {
     // console.log(123)
-    let { children, onSelect, showSearch, className } = this.props;
-    let {showPager} = this.state;
+    let { className } = this.props;
+    let { showPager } = this.state;
     let cls = (className || "") + ' x-scroll-list';
-    let { data } = this.state;
     return (
       <div className={cls}>
-      {showPager&&<i className="xui icon-last x-scroll-list-page" onClick={this.scroll.bind(this,-1)}/>}
-        <div className="x-scroll-list-container" ref={ref=>this.containerRef=ref}>
-          <div className="x-scroll-list-options" ref={ref=>this.listRef=ref}>
+        {showPager && <i className="xui icon-last x-scroll-list-page" onClick={this.scroll.bind(this, -1)} />}
+        <div className="x-scroll-list-container" ref={ref => this.containerRef = ref}>
+          <div className="x-scroll-list-options" ref={ref => this.listRef = ref}>
             {this.renderChildren()}
           </div>
         </div>
-      {showPager&&<i className="xui icon-next1 x-scroll-list-page" onClick={this.scroll.bind(this,1)}/>}
+        {showPager && <i className="xui icon-next1 x-scroll-list-page" onClick={this.scroll.bind(this, 1)} />}
       </div>
     );
   }

@@ -41,7 +41,10 @@ class App extends React.Component {
           </List>
         </div>
         <div style={{ width: 200 }}>
-          <List  onChange={this.onSelectHandle.bind(this)} data={this.state.v}></List>
+          <List value={this.state.value} onChange={this.onSelectHandle.bind(this)} dataSource={this.state.v}></List>
+          <button onClick={()=>{
+            this.setState({value:'BBBB'})
+          }}>设置</button>
         </div>
       </div>
     )
