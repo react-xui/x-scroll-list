@@ -15,9 +15,13 @@ var appElement = document.getElementById('example');
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state= {v:[]}
   }
   onSelectHandle(value,item, index) {
     console.log(arguments)
+  }
+  componentDidMount(){
+    this.setState({v:[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb' }, { text: 'demo4' }, { text: 'demo5' }, { text: 'demo6' }]})
   }
   render() {
     return (
@@ -37,7 +41,7 @@ class App extends React.Component {
           </List>
         </div>
         <div style={{ width: 200 }}>
-          <List  onChange={this.onSelectHandle.bind(this)} data={[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb' }, { text: 'demo4' }, { text: 'demo5' }, { text: 'demo6' }]}></List>
+          <List  onChange={this.onSelectHandle.bind(this)} data={this.state.v}></List>
         </div>
       </div>
     )

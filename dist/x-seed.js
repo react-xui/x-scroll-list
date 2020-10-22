@@ -159,8 +159,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Contact: 55342775@qq.com
 	   */
 
-	var List = function (_Component) {
-	  _inherits(List, _Component);
+	var List = function (_React$PureComponent) {
+	  _inherits(List, _React$PureComponent);
 
 	  function List(props) {
 	    _classCallCheck(this, List);
@@ -223,6 +223,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      window.removeEventListener('resize', this.checkWidth.bind(this), false);
 	    }
 	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      this.checkWidth();
+	    }
+	  }, {
 	    key: 'checkWidth',
 	    value: function checkWidth() {
 	      //判断长度
@@ -271,7 +276,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }]);
 
 	  return List;
-	}(_react.Component);
+	}(_react2.default.PureComponent);
 
 	List.displayName = "ScrollList";
 	List.propTypes = {

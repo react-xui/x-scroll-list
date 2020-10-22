@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Option from './Option';
 import PropTypes from "prop-types";
-export default class List extends Component {
+export default class List extends React.PureComponent {
   static displayName = "ScrollList";
   static propTypes = {
     data: PropTypes.array,
@@ -77,6 +77,9 @@ export default class List extends Component {
   }
   componentWillUnmount(){
     window.removeEventListener('resize', this.checkWidth.bind(this), false);
+  }
+  componentDidUpdate(){
+    this.checkWidth();
   }
   checkWidth(){
     //判断长度
