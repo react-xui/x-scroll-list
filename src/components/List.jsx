@@ -31,21 +31,24 @@ export default class List extends React.PureComponent {
     let value = typeof props.value === 'undefined' ? props.defaultValue : props.value;
     this.state = { showPager: false, value: value };
     this.containerRef = React.createRef();
-    this.listRef = React.createRef();
+    this.listRef = React.createRef();//把dom与value值进行对应;
   }
   onSelect = (value, item, index, e) => {
     let target = e.currentTarget;
-    let x = target.offsetLeft;
-    let container = this.containerRef;
-    let wc = container.offsetWidth;
-    // let sl = this.containerRef.scrollLeft;
-    let sc = x - wc / 2 + target.offsetWidth / 2;
-    container.scroll(sc, 0)
+    this.scrollTo(target);
     // console.log(this.containerRef.scrollLeft,x)
     let { onChange } = this.props;
     this.setState({ value }, () => {
       onChange.call(this, value, item, index);
     })
+  }
+  scrollTo(target){
+    let x = target.offsetLeft;
+    let container = this.containerRef.current;
+    let wc = container.offsetWidth;
+    // let sl = this.containerRef.scrollLeft;
+    let sc = x - wc / 2 + target.offsetWidth / 2;
+    container.scroll(sc, 0)
   }
   //渲染options，判断是data还是直接children
   renderChildren() {
@@ -82,6 +85,13 @@ export default class List extends React.PureComponent {
           }
         });
         this.props.onChange.call(this, newProps.value, obj, index);
+        //定位
+        if(this.listRef.current){
+          let cl = this.listRef.current.children[index];
+          if(cl){
+            this.scrollTo(cl);
+          }
+        }
       });
     }
   }
@@ -97,8 +107,8 @@ export default class List extends React.PureComponent {
   }
   checkWidth() {
     //判断长度
-    let container = this.containerRef;
-    let list = this.listRef;
+    let container = this.containerRef.current;
+    let list = this.listRef.current;
     if (container && list) {
       let wc = container.offsetWidth;
       let wl = list.scrollWidth;
@@ -111,7 +121,7 @@ export default class List extends React.PureComponent {
   }
   scroll(forward) {
     let step = this.props.step * forward;
-    let container = this.containerRef;
+    let container = this.containerRef.current;
     window.container = container
     container.scroll(container.scrollLeft + step, 0)
   }
@@ -123,8 +133,8 @@ export default class List extends React.PureComponent {
     return (
       <div className={cls}>
         {showPager && <i className="xui icon-last x-scroll-list-page" onClick={this.scroll.bind(this, -1)} />}
-        <div className="x-scroll-list-container" ref={ref => this.containerRef = ref}>
-          <div className="x-scroll-list-options" ref={ref => this.listRef = ref}>
+        <div className="x-scroll-list-container" ref={this.containerRef}>
+          <div className="x-scroll-list-options" ref={ this.listRef }>
             {this.renderChildren()}
           </div>
         </div>

@@ -21,7 +21,7 @@ class App extends React.Component {
     console.log(arguments)
   }
   componentDidMount(){
-    this.setState({v:[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb' }, { text: 'demo4' }, { text: 'demo5' }, { text: 'demo6' }]})
+    this.setState({v:[{ text: 'aaaaa' ,value:'AAA'}, { text: 'aabb' ,value:'BBBB'}, { text: 'ccddb'  ,value:'CCCC'}, { text: 'demo4' ,value:'DDDD'}, { text: 'demo5' ,value:'EEEE'}, { text: 'demo6' ,value:'FFFF'}]})
   }
   render() {
     return (
