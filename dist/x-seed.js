@@ -246,6 +246,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          }
 	        });
 	      }
+	      if (newProps.dataSource && newProps.dataSource.length !== this.props.dataSource.length) {
+	        this.checkWidth();
+	      }
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -274,9 +277,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var wl = list.scrollWidth;
 	        // console.log(container,list);
 	        // console.log(wc,wl)
-	        if (wl > wc) {
-	          this.setState({ showPager: true });
-	        }
+	        this.setState({ showPager: wl > wc });
 	      }
 	    }
 	  }, {

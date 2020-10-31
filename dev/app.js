@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: tianxiangbing
  * @Date: 2018-11-30 15:11:03
- * @LastEditTime: 2020-03-12 16:56:51
+ * @LastEditTime: 2020-10-31 14:26:21
  * @github: https://github.com/tianxiangbing
  */
 import React from 'react';
@@ -43,7 +43,7 @@ class App extends React.Component {
         <div style={{ width: 200 }}>
           <List value={this.state.value} onChange={this.onSelectHandle.bind(this)} dataSource={this.state.v}></List>
           <button onClick={()=>{
-            this.setState({value:'BBBB'})
+            this.setState({value:'BBBB',v:[{ text: 'bbbbbb' ,value:'BBBB'}]})
           }}>设置</button>
         </div>
       </div>

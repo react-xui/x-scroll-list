@@ -94,6 +94,9 @@ export default class List extends React.PureComponent {
         }
       });
     }
+    if(newProps.dataSource && newProps.dataSource.length !==this.props.dataSource.length){
+      this.checkWidth();
+    }
   }
   componentDidMount() {
     this.checkWidth();
@@ -114,9 +117,7 @@ export default class List extends React.PureComponent {
       let wl = list.scrollWidth;
       // console.log(container,list);
       // console.log(wc,wl)
-      if (wl > wc) {
-        this.setState({ showPager: true })
-      }
+      this.setState({ showPager: wl > wc })
     }
   }
   scroll(forward) {
